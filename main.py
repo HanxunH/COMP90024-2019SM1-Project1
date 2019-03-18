@@ -2,7 +2,7 @@
 # @Date:   2019-03-16T20:48:22+11:00
 # @Email:  hanxunh@student.unimelb.edu.au
 # @Last modified by:   hanxunhuang
-# @Last modified time: 2019-03-18T18:45:29+11:00
+# @Last modified time: 2019-03-19T00:50:41+11:00
 
 import argparse
 import logging
@@ -17,10 +17,29 @@ parser.add_argument('--twitter_data_file_path', type=str, default='data/tinyTwit
 args = parser.parse_args()
 
 
-def search(grid_data_list, twitter_data_list):
-    # TODO: Search the batch of data and return result_data list
+def search(grid_data_list, twitter_data_list, logger):
+    rs_dict = {}
+    for item in grid_data_list:
+        rs = search_result()
+        rs.id = item.id
+        rs_dict[item.id] = rs
 
-    return
+    # Double Check the grid ID matches!
+    if len(rs_dict) != len(grid_data_list):
+        raise('Incosistent number of grids!')
+
+    for twitter_data in twitter_data_list:
+        if twitter_data.coordinates is not None:
+            for grid_data in grid_data_list:
+                if grid_data.check_if_coordinates_in_grid(twitter_data.coordinates):
+                    # Make Sure The data is in the grid
+                    logger.debug('Grid %s, Longtitude Range is [%f, %f], Latitude Range is [%f, %f]' % (grid_data.id, grid_data.min_longitude, grid_data.max_longitude, grid_data.min_latitude, grid_data.max_latitude))
+                    logger.debug(twitter_data.coordinates)
+                    logger.debug(twitter_data.user_location)
+                    rs_dict[grid_data.id].increment_num_of_post()
+                    rs_dict[grid_data.id].add_hash_tags(twitter_data.hashtags)
+
+    return rs_dict
 
 
 def main():
@@ -30,7 +49,7 @@ def main():
 
     # Setup Logger
     extra = {'Process_ID': rank}
-    logging.basicConfig(level=logging.DEBUG, format='%(asctime)s-Process-%(Process_ID)s-%(levelname)s-%(message)s')
+    logging.basicConfig(level=logging.INFO, format='%(asctime)s-Process-%(Process_ID)s-%(levelname)s-%(message)s')
     logger = logging.getLogger(__name__)
     logger = logging.LoggerAdapter(logger, extra)
 
@@ -55,23 +74,45 @@ def main():
 
     logger.info('Handling %d Twitter Data entries, %d grids' % (len(twitter_data_list), len(grid_data_list)))
 
-    # TODO: Search Function
-    rs_dict = {}
-    for item in grid_data_list:
-        rs = search_result()
-        rs.id = item.id
-        rs_dict[item.id] = rs
+    rs_dict = search(grid_data_list=grid_data_list, twitter_data_list=twitter_data_list, logger=logger)
 
     # Root Process handle the gathering
     data = comm.gather(twitter_data_list, root=0)
-    result = comm.gather(rs_dict, root=0)
+    result_list = comm.gather(rs_dict, root=0)
+    final_result = {}
+    for item in grid_data_list:
+        rs = search_result()
+        rs.id = item.id
+        final_result[item.id] = rs
 
     if rank == 0:
         twitter_data_list = []
         for item in data:
             twitter_data_list = twitter_data_list + item
         logger.info('Total of %d Twitter Data entries after gathering' % (len(twitter_data_list)))
-        # TODO: Handle gathering the search result
+        for result_dict_form_rank in result_list:
+            for grid_id in result_dict_form_rank:
+                final_result[grid_id].add_hash_tags(result_dict_form_rank[grid_id].hash_tags)
+                final_result[grid_id].add_num_of_post(result_dict_form_rank[grid_id].num_of_post)
+
+        # Process The Result
+        for grid_id in final_result:
+            final_result[grid_id].process_result()
+
+        print(('=' * 30) + ' Final Result ' + ('=' * 30))
+
+        # Print total number of Twitter posts
+        print(('=' * 30) + ' total number of Twitter posts' + ('=' * 30))
+        for grid_id in final_result:
+            print('%s: %d posts' % (final_result[grid_id].id, final_result[grid_id].num_of_post))
+
+        # Print top5 hashtags number of Twitter posts
+        print(('=' * 30) + ' Top 5 Hashtags' + ('=' * 30))
+        for grid_id in final_result:
+            if len(final_result[grid_id].top_5_string) > 0:
+                print('%s: (%s) ' % (final_result[grid_id].id, final_result[grid_id].top_5_string))
+            else:
+                print('%s: None ' % (final_result[grid_id].id))
 
     return
 
