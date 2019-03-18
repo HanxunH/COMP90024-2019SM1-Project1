@@ -2,9 +2,10 @@
 # @Date:   2019-03-16T20:48:22+11:00
 # @Email:  hanxunh@student.unimelb.edu.au
 # @Last modified by:   hanxunhuang
-# @Last modified time: 2019-03-18T17:52:58+11:00
+# @Last modified time: 2019-03-18T18:45:29+11:00
 
 import argparse
+import logging
 from mpi4py import MPI
 from util import util, search_result
 
@@ -21,17 +22,24 @@ def search(grid_data_list, twitter_data_list):
 
     return
 
+
 def main():
     comm = MPI.COMM_WORLD
     rank = comm.Get_rank()
     size = comm.Get_size()  # new: gives number of ranks in comm
 
+    # Setup Logger
+    extra = {'Process_ID': rank}
+    logging.basicConfig(level=logging.DEBUG, format='%(asctime)s-Process-%(Process_ID)s-%(levelname)s-%(message)s')
+    logger = logging.getLogger(__name__)
+    logger = logging.LoggerAdapter(logger, extra)
+
     # Root Process handle IO
     if rank == 0:
-        print(size)
         grid_data_list = util.load_grid(args.grid_file_path)
         twitter_data_list = util.load_twitter_data(args.twitter_data_file_path)
-        print(len(twitter_data_list))
+        logger.info('Total Number of Cores: %d' % (size))
+        logger.info('Total of %d Twitter Data entries before scattering' % (len(twitter_data_list)))
 
         chunks = [[] for _ in range(size)]
         for i, chunk in enumerate(twitter_data_list):
@@ -45,7 +53,7 @@ def main():
     grid_data_list = comm.bcast(grid_data_list, root=0)
     twitter_data_list = comm.scatter(chunks, root=0)
 
-    print(rank, len(twitter_data_list), len(grid_data_list))
+    logger.info('Handling %d Twitter Data entries, %d grids' % (len(twitter_data_list), len(grid_data_list)))
 
     # TODO: Search Function
     rs_dict = {}
@@ -62,8 +70,7 @@ def main():
         twitter_data_list = []
         for item in data:
             twitter_data_list = twitter_data_list + item
-        print('Final Length %d ' % (len(twitter_data_list)))
-        print(len(result))
+        logger.info('Total of %d Twitter Data entries after gathering' % (len(twitter_data_list)))
         # TODO: Handle gathering the search result
 
     return
