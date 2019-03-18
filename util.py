@@ -1,8 +1,15 @@
 # @Author: hanxunhuang
 # @Date:   2019-03-16T20:27:08+11:00
 # @Last modified by:   hanxunhuang
-# @Last modified time: 2019-03-17T23:48:05+11:00
+# @Last modified time: 2019-03-18T17:22:55+11:00
 import json
+
+
+class search_result:
+    def __init__(self):
+        self.grid_id = None
+        self.num_of_post = 0
+        self.hash_tags = []
 
 
 class grid_data:
