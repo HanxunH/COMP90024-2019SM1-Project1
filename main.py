@@ -2,10 +2,11 @@
 # @Date:   2019-03-16T20:48:22+11:00
 # @Email:  hanxunh@student.unimelb.edu.au
 # @Last modified by:   hanxunhuang
-# @Last modified time: 2019-03-19T00:50:41+11:00
+# @Last modified time: 2019-03-20T17:22:58+11:00
 
 import argparse
 import logging
+import datetime
 from mpi4py import MPI
 from util import util, search_result
 
@@ -55,11 +56,13 @@ def main():
 
     # Root Process handle IO
     if rank == 0:
+        start = datetime.datetime.now()
         grid_data_list = util.load_grid(args.grid_file_path)
         twitter_data_list = util.load_twitter_data(args.twitter_data_file_path)
+        end = datetime.datetime.now()
         logger.info('Total Number of Cores: %d' % (size))
         logger.info('Total of %d Twitter Data entries before scattering' % (len(twitter_data_list)))
-
+        logger.info('IO takes: %s ' % (str((end-start))))
         chunks = [[] for _ in range(size)]
         for i, chunk in enumerate(twitter_data_list):
             chunks[i % size].append(chunk)
@@ -74,7 +77,10 @@ def main():
 
     logger.info('Handling %d Twitter Data entries, %d grids' % (len(twitter_data_list), len(grid_data_list)))
 
+    start = datetime.datetime.now()
     rs_dict = search(grid_data_list=grid_data_list, twitter_data_list=twitter_data_list, logger=logger)
+    end = datetime.datetime.now()
+    logger.info('Search takes: %s ' % (str((end-start))))
 
     # Root Process handle the gathering
     data = comm.gather(twitter_data_list, root=0)

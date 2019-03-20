@@ -1,7 +1,7 @@
 # @Author: hanxunhuang
 # @Date:   2019-03-16T20:27:08+11:00
 # @Last modified by:   hanxunhuang
-# @Last modified time: 2019-03-19T00:46:21+11:00
+# @Last modified time: 2019-03-20T17:25:05+11:00
 import json
 import collections
 
@@ -27,12 +27,8 @@ class search_result:
         for item in self.hash_tags:
             self.cnt[item] = self.cnt[item] + 1
 
-        count = 0
-        for id in self.cnt:
-            if count == 5:
-                break
-            self.top_5_string = self.top_5_string + str(('#'+str(id), self.cnt[id]))
-            count = count + 1
+        for item in self.cnt.most_common(5):
+            self.top_5_string = self.top_5_string + str(item)
 
         return
 
@@ -94,7 +90,7 @@ class twitter_data:
             self.geo = json_data['geo']
             self.coordinates = json_data['geo']['coordinates']
         for item in json_data['entities']['hashtags']:
-            self.hashtags.append(item['text'])
+            self.hashtags.append(('#' + item['text']))
 
 
 class util:
