@@ -1,8 +1,9 @@
 # @Author: hanxunhuang
 # @Date:   2019-03-16T20:27:08+11:00
 # @Last modified by:   hanxunhuang
-# @Last modified time: 2019-03-20T17:25:05+11:00
+# @Last modified time: 2019-03-20T17:51:26+11:00
 import json
+# import ijson
 import collections
 
 
@@ -34,16 +35,21 @@ class search_result:
 
 
 class grid_data:
-    def __init__(self, json_data):
-        self.type = json_data['type']
-        self.id = json_data["properties"]['id']
+    def __init__(self, json_data=None):
+        self.json_data = json_data
+        if self.json_data is not None:
+            self.process_json_data()
+
+    def process_json_data(self):
+        self.type = self.json_data['type']
+        self.id = self.json_data["properties"]['id']
         # X for Longitude, Y for Latitude
-        self.min_longitude = json_data['properties']['xmin']
-        self.max_longitude = json_data['properties']['xmax']
-        self.min_latitude = json_data['properties']['ymin']
-        self.max_latitude = json_data['properties']['ymax']
-        self.geometry_type = json_data['geometry']['type']
-        self.geometry_coordinates = json_data['geometry']['coordinates'][0]
+        self.min_longitude = self.json_data['properties']['xmin']
+        self.max_longitude = self.json_data['properties']['xmax']
+        self.min_latitude = self.json_data['properties']['ymin']
+        self.max_latitude = self.json_data['properties']['ymax']
+        self.geometry_type = self.json_data['geometry']['type']
+        self.geometry_coordinates = self.json_data['geometry']['coordinates'][0]
 
     def check_if_coordinates_in_grid(self, coordinates):
         '''
@@ -78,22 +84,38 @@ class grid_data:
 
 
 class twitter_data:
-    def __init__(self, json_data):
-        self._id = json_data['_id']
-        self.id = json_data['id']
-        self.text = json_data['text']
+    def __init__(self, json_data=None):
+        self.json_data = json_data
+        if self.json_data is not None:
+            self.process_json_data()
+
+    def process_json_data(self):
+        self._id = self.json_data['_id']
+        self.id = self.json_data['id']
+        self.text = self.json_data['text']
         self.geo = None
         self.coordinates = None
         self.hashtags = []
-        self.user_location = json_data['user']['location']
-        if 'geo' in json_data and json_data['geo'] is not None:
-            self.geo = json_data['geo']
-            self.coordinates = json_data['geo']['coordinates']
-        for item in json_data['entities']['hashtags']:
+        self.user_location = self.json_data['user']['location']
+        if 'geo' in self.json_data and self.json_data['geo'] is not None:
+            self.geo = self.json_data['geo']
+            self.coordinates = self.json_data['geo']['coordinates']
+        for item in self.json_data['entities']['hashtags']:
             self.hashtags.append(('#' + item['text']))
+        return
 
 
 class util:
+    # def load_grid_with_ijson(file_path='data/melbGrid.json'):
+    #     grid_dict = {}
+    #     parser = ijson.parse(open(file_path, 'r'))
+    #     for prefix, event, value in parser:
+    #         if prefix == 'properties' and event == 'id':
+    #             temp = grid_data()
+    #             temp.id = value
+    #             grid_dict[temp.id] = temp
+    #     return
+
     def load_grid(file_path='data/melbGrid.json'):
         with open(file_path, 'r') as f:
             data = json.load(f)
@@ -105,6 +127,7 @@ class util:
         grid_list = []
         for item in data['features']:
             grid_list.append(grid_data(item))
+
         return grid_list
 
     def load_twitter_data(file_path='data/tinyTwitter.json'):

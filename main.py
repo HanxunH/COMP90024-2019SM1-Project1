@@ -2,7 +2,7 @@
 # @Date:   2019-03-16T20:48:22+11:00
 # @Email:  hanxunh@student.unimelb.edu.au
 # @Last modified by:   hanxunhuang
-# @Last modified time: 2019-03-20T17:22:58+11:00
+# @Last modified time: 2019-03-20T17:51:07+11:00
 
 import argparse
 import logging
@@ -15,6 +15,7 @@ from util import util, search_result
 parser = argparse.ArgumentParser(description='COMP90024 Project1')
 parser.add_argument('--grid_file_path', type=str, default='data/melbGrid.json')
 parser.add_argument('--twitter_data_file_path', type=str, default='data/tinyTwitter_pretty.json')
+parser.add_argument('--data_pre_processing', default=True)
 args = parser.parse_args()
 
 
@@ -59,6 +60,7 @@ def main():
         start = datetime.datetime.now()
         grid_data_list = util.load_grid(args.grid_file_path)
         twitter_data_list = util.load_twitter_data(args.twitter_data_file_path)
+        # grid_data_dict = util.load_grid_with_ijson(args.grid_file_path)
         end = datetime.datetime.now()
         logger.info('Total Number of Cores: %d' % (size))
         logger.info('Total of %d Twitter Data entries before scattering' % (len(twitter_data_list)))
