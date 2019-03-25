@@ -1,9 +1,9 @@
 # @Author: hanxunhuang
 # @Date:   2019-03-16T20:27:08+11:00
 # @Last modified by:   hanxunhuang
-# @Last modified time: 2019-03-20T17:51:26+11:00
+# @Last modified time: 2019-03-25T20:12:14+11:00
 import json
-# import ijson
+import ijson
 import collections
 
 
@@ -86,6 +86,13 @@ class grid_data:
 class twitter_data:
     def __init__(self, json_data=None):
         self.json_data = json_data
+        self._id = None
+        self.id = None
+        self.text = None
+        self.geo = None
+        self.coordinates = None
+        self.hashtags = []
+        self.user_location = None
         if self.json_data is not None:
             self.process_json_data()
 
@@ -106,15 +113,47 @@ class twitter_data:
 
 
 class util:
-    # def load_grid_with_ijson(file_path='data/melbGrid.json'):
-    #     grid_dict = {}
-    #     parser = ijson.parse(open(file_path, 'r'))
-    #     for prefix, event, value in parser:
-    #         if prefix == 'properties' and event == 'id':
-    #             temp = grid_data()
-    #             temp.id = value
-    #             grid_dict[temp.id] = temp
-    #     return
+    def load_twitter_with_ijson(file_path='data/tinyTwitter.json'):
+        twitter_data_dict = {}
+        parser = ijson.parse(open(file_path, 'r'))
+        current_twitter_data_item = None
+        for prefix, event, value in parser:
+            if prefix == 'item._id':
+                current_twitter_data_item = twitter_data()
+                current_twitter_data_item._id = value
+                twitter_data_dict[current_twitter_data_item._id] = current_twitter_data_item
+            elif prefix == 'item.text':
+                twitter_data_dict[current_twitter_data_item._id].text = value
+            elif prefix == 'item.entities.hashtags.item.text':
+                twitter_data_dict[current_twitter_data_item._id].hashtags.append(('#' + value))
+            elif prefix == 'item.geo.coordinates.item':
+                if twitter_data_dict[current_twitter_data_item._id].coordinates is None:
+                    twitter_data_dict[current_twitter_data_item._id].coordinates = []
+                twitter_data_dict[current_twitter_data_item._id].coordinates.append(value)
+        return twitter_data_dict
+
+    def load_grid_with_ijson(file_path='data/melbGrid.json'):
+        grid_dict = {}
+        parser = ijson.parse(open(file_path, 'r'))
+        current_grid_data_item = None
+        for prefix, event, value in parser:
+            if prefix == 'features.item.properties.id':
+                current_grid_data_item = grid_data()
+                current_grid_data_item.id = value
+                grid_dict[current_grid_data_item.id] = current_grid_data_item
+            elif prefix == 'features.item.properties.xmin':
+                grid_dict[current_grid_data_item.id].min_longitude = value
+            elif prefix == 'features.item.properties.xmax':
+                grid_dict[current_grid_data_item.id].max_longitude = value
+            elif prefix == 'features.item.properties.ymin':
+                grid_dict[current_grid_data_item.id].min_latitude = value
+            elif prefix == 'features.item.properties.ymax':
+                grid_dict[current_grid_data_item.id].max_latitude = value
+            elif prefix == 'features.item.geometry.type':
+                grid_dict[current_grid_data_item.id].geometry_type = value
+            elif prefix == 'features.item.geometry.coordinates':
+                grid_dict[current_grid_data_item.id].geometry_coordinates = value
+        return grid_dict
 
     def load_grid(file_path='data/melbGrid.json'):
         with open(file_path, 'r') as f:
