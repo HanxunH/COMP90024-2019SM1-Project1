@@ -2,7 +2,7 @@
 # @Date:   2019-03-16T20:48:22+11:00
 # @Email:  hanxunh@student.unimelb.edu.au
 # @Last modified by:   hanxunhuang
-# @Last modified time: 2019-03-25T20:11:47+11:00
+# @Last modified time: 2019-03-27T18:34:48+11:00
 
 import argparse
 import logging
@@ -14,7 +14,7 @@ from util import util, search_result
 # Args Handling
 parser = argparse.ArgumentParser(description='COMP90024 Project1')
 parser.add_argument('--grid_file_path', type=str, default='data/melbGrid.json')
-parser.add_argument('--twitter_data_file_path', type=str, default='data/tinyTwitter_pretty.json')
+parser.add_argument('--twitter_data_file_path', type=str, default='data/tinyTwitter.json')
 parser.add_argument('--data_pre_processing', default=True)
 args = parser.parse_args()
 

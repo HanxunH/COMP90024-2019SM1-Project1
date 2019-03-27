@@ -1,7 +1,7 @@
 # @Author: hanxunhuang
 # @Date:   2019-03-16T20:27:08+11:00
 # @Last modified by:   hanxunhuang
-# @Last modified time: 2019-03-25T20:12:14+11:00
+# @Last modified time: 2019-03-27T18:34:43+11:00
 import json
 import ijson
 import collections
@@ -118,15 +118,16 @@ class util:
         parser = ijson.parse(open(file_path, 'r'))
         current_twitter_data_item = None
         for prefix, event, value in parser:
-            if prefix == 'item._id':
+            # print(prefix, event, value)
+            if prefix == 'rows.item.doc._id':
                 current_twitter_data_item = twitter_data()
                 current_twitter_data_item._id = value
                 twitter_data_dict[current_twitter_data_item._id] = current_twitter_data_item
-            elif prefix == 'item.text':
+            elif prefix == 'rows.item.doc.text':
                 twitter_data_dict[current_twitter_data_item._id].text = value
-            elif prefix == 'item.entities.hashtags.item.text':
+            elif prefix == 'rows.item.doc.entities.hashtags.item.text':
                 twitter_data_dict[current_twitter_data_item._id].hashtags.append(('#' + value))
-            elif prefix == 'item.geo.coordinates.item':
+            elif prefix == 'rows.item.doc.geo.coordinates.item':
                 if twitter_data_dict[current_twitter_data_item._id].coordinates is None:
                     twitter_data_dict[current_twitter_data_item._id].coordinates = []
                 twitter_data_dict[current_twitter_data_item._id].coordinates.append(value)
