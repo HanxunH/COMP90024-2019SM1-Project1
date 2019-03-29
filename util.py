@@ -1,7 +1,7 @@
 # @Author: hanxunhuang
 # @Date:   2019-03-16T20:27:08+11:00
 # @Last modified by:   hanxunhuang
-# @Last modified time: 2019-03-27T18:34:43+11:00
+# @Last modified time: 2019-03-29T22:00:09+11:00
 import json
 import ijson
 import collections
@@ -114,47 +114,57 @@ class twitter_data:
 
 class util:
     def load_twitter_with_ijson(file_path='data/tinyTwitter.json'):
-        twitter_data_dict = {}
-        parser = ijson.parse(open(file_path, 'r'))
+        twitter_data_list = []
+        parser = ijson.parse(open(file_path, 'rb'))
         current_twitter_data_item = None
         for prefix, event, value in parser:
             # print(prefix, event, value)
             if prefix == 'rows.item.doc._id':
+                if current_twitter_data_item is not None:
+                    twitter_data_list.append(current_twitter_data_item)
                 current_twitter_data_item = twitter_data()
                 current_twitter_data_item._id = value
-                twitter_data_dict[current_twitter_data_item._id] = current_twitter_data_item
             elif prefix == 'rows.item.doc.text':
-                twitter_data_dict[current_twitter_data_item._id].text = value
+                current_twitter_data_item.text = value
             elif prefix == 'rows.item.doc.entities.hashtags.item.text':
-                twitter_data_dict[current_twitter_data_item._id].hashtags.append(('#' + value))
+                current_twitter_data_item.hashtags.append(('#' + value))
             elif prefix == 'rows.item.doc.geo.coordinates.item':
-                if twitter_data_dict[current_twitter_data_item._id].coordinates is None:
-                    twitter_data_dict[current_twitter_data_item._id].coordinates = []
-                twitter_data_dict[current_twitter_data_item._id].coordinates.append(value)
-        return twitter_data_dict
+                if current_twitter_data_item.coordinates is None:
+                    current_twitter_data_item.coordinates = []
+                current_twitter_data_item.coordinates.append(value)
+
+        if current_twitter_data_item is not None:
+            twitter_data_list.append(current_twitter_data_item)
+
+        return twitter_data_list
 
     def load_grid_with_ijson(file_path='data/melbGrid.json'):
-        grid_dict = {}
-        parser = ijson.parse(open(file_path, 'r'))
+        grid_list = []
+        parser = ijson.parse(open(file_path, 'rb'))
         current_grid_data_item = None
         for prefix, event, value in parser:
             if prefix == 'features.item.properties.id':
+                if current_grid_data_item is not None:
+                    grid_list.append(current_grid_data_item)
                 current_grid_data_item = grid_data()
                 current_grid_data_item.id = value
-                grid_dict[current_grid_data_item.id] = current_grid_data_item
             elif prefix == 'features.item.properties.xmin':
-                grid_dict[current_grid_data_item.id].min_longitude = value
+                current_grid_data_item.min_longitude = value
             elif prefix == 'features.item.properties.xmax':
-                grid_dict[current_grid_data_item.id].max_longitude = value
+                current_grid_data_item.max_longitude = value
             elif prefix == 'features.item.properties.ymin':
-                grid_dict[current_grid_data_item.id].min_latitude = value
+                current_grid_data_item.min_latitude = value
             elif prefix == 'features.item.properties.ymax':
-                grid_dict[current_grid_data_item.id].max_latitude = value
+                current_grid_data_item.max_latitude = value
             elif prefix == 'features.item.geometry.type':
-                grid_dict[current_grid_data_item.id].geometry_type = value
+                current_grid_data_item.geometry_type = value
             elif prefix == 'features.item.geometry.coordinates':
-                grid_dict[current_grid_data_item.id].geometry_coordinates = value
-        return grid_dict
+                current_grid_data_item.geometry_coordinates = value
+
+        if current_grid_data_item is not None:
+            grid_list.append(current_grid_data_item)
+
+        return grid_list
 
     def load_grid(file_path='data/melbGrid.json'):
         with open(file_path, 'r') as f:

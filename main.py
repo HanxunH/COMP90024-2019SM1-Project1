@@ -2,7 +2,7 @@
 # @Date:   2019-03-16T20:48:22+11:00
 # @Email:  hanxunh@student.unimelb.edu.au
 # @Last modified by:   hanxunhuang
-# @Last modified time: 2019-03-27T18:34:48+11:00
+# @Last modified time: 2019-03-29T21:39:25+11:00
 
 import argparse
 import logging
@@ -58,10 +58,8 @@ def main():
     # Root Process handle IO
     if rank == 0:
         start = datetime.datetime.now()
-        twitter_data_dict = util.load_twitter_with_ijson(args.twitter_data_file_path)
-        grid_data_dict = util.load_grid_with_ijson(args.grid_file_path)
-        grid_data_list = list(grid_data_dict.values())
-        twitter_data_list = list(twitter_data_dict.values())
+        twitter_data_list = util.load_twitter_with_ijson(args.twitter_data_file_path)
+        grid_data_list = util.load_grid_with_ijson(args.grid_file_path)
         end = datetime.datetime.now()
         logger.info('Total Number of Cores: %d' % (size))
         logger.info('Total of %d Twitter Data entries before scattering' % (len(twitter_data_list)))
@@ -107,21 +105,24 @@ def main():
         # Process The Result
         for grid_id in final_result:
             final_result[grid_id].process_result()
+        final_result = [v for v in final_result.values()]
+        final_result = sorted(final_result, key=lambda x: x.num_of_post, reverse=True)
 
+        # Print Resuts
         print(('=' * 30) + ' Final Result ' + ('=' * 30))
 
         # Print total number of Twitter posts
         print(('=' * 30) + ' total number of Twitter posts' + ('=' * 30))
-        for grid_id in final_result:
-            print('%s: %d posts' % (final_result[grid_id].id, final_result[grid_id].num_of_post))
+        for item in final_result:
+            print('%s: %d posts' % (item.id, item.num_of_post))
 
         # Print top5 hashtags number of Twitter posts
         print(('=' * 30) + ' Top 5 Hashtags' + ('=' * 30))
-        for grid_id in final_result:
-            if len(final_result[grid_id].top_5_string) > 0:
-                print('%s: (%s) ' % (final_result[grid_id].id, final_result[grid_id].top_5_string))
+        for item in final_result:
+            if len(item.top_5_string) > 0:
+                print('%s: (%s) ' % (item.id, item.top_5_string))
             else:
-                print('%s: None ' % (final_result[grid_id].id))
+                print('%s: None ' % (item.id))
 
     return
 
