@@ -2,7 +2,7 @@
 # @Date:   2019-03-16T20:48:22+11:00
 # @Email:  hanxunh@student.unimelb.edu.au
 # @Last modified by:   hanxunhuang
-# @Last modified time: 2019-03-29T21:39:25+11:00
+# @Last modified time: 2019-04-04T00:27:11+11:00
 
 import argparse
 import logging
@@ -58,8 +58,8 @@ def main():
     # Root Process handle IO
     if rank == 0:
         start = datetime.datetime.now()
-        twitter_data_list = util.load_twitter_with_ijson(args.twitter_data_file_path)
-        grid_data_list = util.load_grid_with_ijson(args.grid_file_path)
+        twitter_data_list = util.load_twitter_data(args.twitter_data_file_path)
+        grid_data_list = util.load_grid(args.grid_file_path)
         end = datetime.datetime.now()
         logger.info('Total Number of Cores: %d' % (size))
         logger.info('Total of %d Twitter Data entries before scattering' % (len(twitter_data_list)))

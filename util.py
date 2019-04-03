@@ -1,9 +1,8 @@
 # @Author: hanxunhuang
 # @Date:   2019-03-16T20:27:08+11:00
 # @Last modified by:   hanxunhuang
-# @Last modified time: 2019-04-03T16:19:39+11:00
+# @Last modified time: 2019-04-04T01:07:57+11:00
 import json
-import ijson
 import collections
 
 
@@ -113,59 +112,6 @@ class twitter_data:
 
 
 class util:
-    def load_twitter_with_ijson(file_path='data/tinyTwitter.json'):
-        twitter_data_list = []
-        parser = ijson.parse(open(file_path, 'rb'))
-        current_twitter_data_item = None
-        for prefix, event, value in parser:
-            # print(prefix, event, value)
-            if prefix == 'rows.item.doc._id':
-                if current_twitter_data_item is not None:
-                    twitter_data_list.append(current_twitter_data_item)
-                current_twitter_data_item = twitter_data()
-                current_twitter_data_item._id = value
-            elif prefix == 'rows.item.doc.text':
-                current_twitter_data_item.text = value
-            elif prefix == 'rows.item.doc.entities.hashtags.item.text':
-                current_twitter_data_item.hashtags.append(('#' + value.lower()))
-            elif prefix == 'rows.item.doc.geo.coordinates.item':
-                if current_twitter_data_item.coordinates is None:
-                    current_twitter_data_item.coordinates = []
-                current_twitter_data_item.coordinates.append(value)
-
-        if current_twitter_data_item is not None:
-            twitter_data_list.append(current_twitter_data_item)
-
-        return twitter_data_list
-
-    def load_grid_with_ijson(file_path='data/melbGrid.json'):
-        grid_list = []
-        parser = ijson.parse(open(file_path, 'rb'))
-        current_grid_data_item = None
-        for prefix, event, value in parser:
-            if prefix == 'features.item.properties.id':
-                if current_grid_data_item is not None:
-                    grid_list.append(current_grid_data_item)
-                current_grid_data_item = grid_data()
-                current_grid_data_item.id = value
-            elif prefix == 'features.item.properties.xmin':
-                current_grid_data_item.min_longitude = value
-            elif prefix == 'features.item.properties.xmax':
-                current_grid_data_item.max_longitude = value
-            elif prefix == 'features.item.properties.ymin':
-                current_grid_data_item.min_latitude = value
-            elif prefix == 'features.item.properties.ymax':
-                current_grid_data_item.max_latitude = value
-            elif prefix == 'features.item.geometry.type':
-                current_grid_data_item.geometry_type = value
-            elif prefix == 'features.item.geometry.coordinates':
-                current_grid_data_item.geometry_coordinates = value
-
-        if current_grid_data_item is not None:
-            grid_list.append(current_grid_data_item)
-
-        return grid_list
-
     def load_grid(file_path='data/melbGrid.json'):
         with open(file_path, 'r') as f:
             data = json.load(f)
@@ -181,11 +127,24 @@ class util:
         return grid_list
 
     def load_twitter_data(file_path='data/tinyTwitter.json'):
-        with open(file_path, 'r') as f:
-            data = json.load(f)
-
         twitter_data_list = []
-        for item in data:
-            twitter_data_list.append(twitter_data(item))
+        current_twitter_data_item = None
+        with open(file_path) as f:
+            for line in f:
+                if line.startswith('{"id'):
+                    if line.endswith('},\n'):
+                        data = json.loads(line[0:len(line) - 2])
+                    else:
+                        data = json.loads(line[0:len(line) - 1])
+                    if current_twitter_data_item is not None:
+                        twitter_data_list.append(current_twitter_data_item)
+                    current_twitter_data_item = twitter_data()
+                    current_twitter_data_item.id = data['id']
+                    for hashtag in data['doc']['entities']['hashtags']:
+                        current_twitter_data_item.hashtags.append('#' + hashtag['text'].lower())
+                    if 'geo' in data['doc'] and data['doc']['geo'] is not None and 'coordinates' in data['doc']['geo']:
+                        current_twitter_data_item.coordinates = data['doc']['geo']['coordinates']
+            if current_twitter_data_item is not None:
+                twitter_data_list.append(current_twitter_data_item)
 
         return twitter_data_list
