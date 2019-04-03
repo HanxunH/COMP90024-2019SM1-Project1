@@ -1,7 +1,7 @@
 # @Author: hanxunhuang
 # @Date:   2019-03-16T20:27:08+11:00
 # @Last modified by:   hanxunhuang
-# @Last modified time: 2019-03-29T22:00:09+11:00
+# @Last modified time: 2019-04-03T16:19:39+11:00
 import json
 import ijson
 import collections
@@ -108,7 +108,7 @@ class twitter_data:
             self.geo = self.json_data['geo']
             self.coordinates = self.json_data['geo']['coordinates']
         for item in self.json_data['entities']['hashtags']:
-            self.hashtags.append(('#' + item['text']))
+            self.hashtags.append(('#' + item['text'].lower()))
         return
 
 
@@ -127,7 +127,7 @@ class util:
             elif prefix == 'rows.item.doc.text':
                 current_twitter_data_item.text = value
             elif prefix == 'rows.item.doc.entities.hashtags.item.text':
-                current_twitter_data_item.hashtags.append(('#' + value))
+                current_twitter_data_item.hashtags.append(('#' + value.lower()))
             elif prefix == 'rows.item.doc.geo.coordinates.item':
                 if current_twitter_data_item.coordinates is None:
                     current_twitter_data_item.coordinates = []
