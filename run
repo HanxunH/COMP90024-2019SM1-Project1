@@ -1,41 +1,75 @@
-#!/bin/sh
+#!/bin/bash
 
 helpFunction()
 {
    echo ""
-   echo "Usage: $0 -f YOUR_FILE_NAME"
-   echo "====================================="
-   echo "=          Example Command          ="
-   echo "====================================="
-   echo "=    ./run -f 1core_1node_tiny      ="
-   echo "=    ./run -f 8core_1node_tiny      ="
-   echo "====================================="
+   echo "Usage: $0 -d TWITTER_DATA_FILE -g MELBGRID_FILE [-options]"
+   echo "Options include:"
+   echo -e "\t-d\tPath to twitter data file <REQUIRE>"
+   echo -e "\t-g\tPath to melbourne grid file <REQUIRE>"
+   echo -e "\t-c\tMaximum number of tasks/CPU cores used by the job\t(default: 1)"
+   echo -e "\t-e\tEmail for finish notification\t(default: xuwang2@student.unimelb.edu.au)"
+   echo -e "\t-n\tNumber of nodes\t(default: 1)"
+   echo -e "\t-?\tPrint this help message"
    echo ""
    exit 1 # Exit script after printing help
 }
 
-while getopts "f:" opt
+while getopts "c:d:e:g:n:" opt
 do
    case "$opt" in
-      f ) YOUR_FILE_NAME="$OPTARG" ;;
+      c ) CORE_NUMBER="$OPTARG" ;;
+      d ) TWITTER_DATA_FILE="$OPTARG" ;;
+      e ) EMAIL="$OPTARG" ;;
+      g ) MELBGRID_FILE="$OPTARG" ;;
+      n ) NODE_NUMBER="$OPTARG" ;;
       ? ) helpFunction ;;
    esac
 done
 
 # Print helpFunction in case parameters are empty
-if [ -z "$YOUR_FILE_NAME" ]
+if [ -z "$TWITTER_DATA_FILE" ] || [ -z "$MELBGRID_FILE" ]
 then
    echo "Some or all of the parameters are empty";
    helpFunction
 fi
 
 #link json files to data/
-bigTwitter="$PWD/data/bigTwitter.json"
-if [ ! -f "$bigTwitter" ]; then
-   cd data/
+bigTwitter="$PWD/../data/bigTwitter.json"
+smallTwitter="$PWD/../data/smallTwitter.json"
+tinyTwitter="$PWD/../data/tinyTwitter.json"
+melbGrid="$PWD/../data/melbGrid.json"
+if [ ! -d "$PWD/../data" ]
+then
+   mkdir "$PWD/../data"
+   ln -s /data/projects/COMP90024/bigTwitter.json
+   ln -s /data/projects/COMP90024/smallTwitter.json
+   ln -s /data/projects/COMP90024/tinyTwitter.json
+   ln -s /data/projects/COMP90024/melbGrid.json
+elif [ ! -f "$bigTwitter" ]
+then
+   cd ../data
    ln -s /data/projects/COMP90024/bigTwitter.json
    cd -
    echo "============= Linked bigTwitter.json ================="
+elif [ ! -f "$smallTwitter" ]
+then
+   cd ../data
+   ln -s /data/projects/COMP90024/smallTwitter.json
+   cd -
+   echo "============= Linked smallTwitter.json ================="
+elif [ ! -f "$tinyTwitter" ]
+then
+   cd ../data
+   ln -s /data/projects/COMP90024/tinyTwitter.json
+   cd -
+   echo "============= Linked tinyTwitter.json ================="
+elif [ ! -f "$melbGrid" ]
+then
+   cd ../data
+   ln -s /data/projects/COMP90024/melbGrid.json
+   cd -
+   echo "============= Linked melbGrid.json ================="
 fi
 
 # load modules
@@ -50,6 +84,12 @@ pip3 install --user mpi4py
 pip3 install --user ijson
 echo "============= Install Dependencies Succesful! ========"
 
+export CORE_NUMBER
+export NODE_NUMBER
+export TWITTER_DATA_FILE
+export MELBGRID_FILE
+export EMAIL
+
+source scripts/sbatch
 #start slurm script
-echo "============= Your current path is $PWD =============="
-sbatch --partition cloud $PWD/slurm/$YOUR_FILE_NAME.slurm
+#sbatch --partition cloud $PWD/scripts/slurm
