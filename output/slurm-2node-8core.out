@@ -1,0 +1,55 @@
+2019-04-04 02:32:32,224-Process-0-INFO-Total Number of Cores: 8
+2019-04-04 02:32:32,225-Process-0-INFO-Total of 2500000 Twitter Data entries before scattering
+2019-04-04 02:32:32,225-Process-0-INFO-IO takes: 0:03:49.757433 
+2019-04-04 02:32:42,924-Process-3-INFO-Handling 312500 Twitter Data entries, 16 grids
+2019-04-04 02:32:42,926-Process-2-INFO-Handling 312500 Twitter Data entries, 16 grids
+2019-04-04 02:32:43,092-Process-4-INFO-Handling 312500 Twitter Data entries, 16 grids
+2019-04-04 02:32:43,101-Process-6-INFO-Handling 312500 Twitter Data entries, 16 grids
+2019-04-04 02:32:43,132-Process-5-INFO-Handling 312500 Twitter Data entries, 16 grids
+2019-04-04 02:32:43,138-Process-7-INFO-Handling 312500 Twitter Data entries, 16 grids
+2019-04-04 02:32:43,459-Process-1-INFO-Handling 312500 Twitter Data entries, 16 grids
+2019-04-04 02:32:44,653-Process-0-INFO-Handling 312500 Twitter Data entries, 16 grids
+2019-04-04 02:32:45,579-Process-3-INFO-Search takes: 0:00:02.645526 
+2019-04-04 02:32:45,591-Process-2-INFO-Search takes: 0:00:02.655587 
+2019-04-04 02:32:45,628-Process-6-INFO-Search takes: 0:00:02.517353 
+2019-04-04 02:32:45,738-Process-5-INFO-Search takes: 0:00:02.597180 
+2019-04-04 02:32:45,738-Process-7-INFO-Search takes: 0:00:02.592079 
+2019-04-04 02:32:45,766-Process-4-INFO-Search takes: 0:00:02.664409 
+2019-04-04 02:32:46,290-Process-1-INFO-Search takes: 0:00:02.817100 
+2019-04-04 02:32:47,217-Process-0-INFO-Search takes: 0:00:02.561037 
+2019-04-04 02:33:18,381-Process-0-INFO-Total of 2500000 Twitter Data entries after gathering
+============================== Final Result ==============================
+============================== total number of Twitter posts==============================
+C2: 145096 posts
+B2: 79633 posts
+C3: 53299 posts
+B3: 26550 posts
+C4: 19699 posts
+B1: 16507 posts
+D4: 14497 posts
+D3: 13388 posts
+C1: 8415 posts
+B4: 5450 posts
+A3: 5036 posts
+A2: 4165 posts
+C5: 4105 posts
+D5: 3248 posts
+A1: 2533 posts
+A4: 310 posts
+============================== Top 5 Hashtags==============================
+C2: (('#melbourne', 13467)('#job', 2127)('#australia', 1784)('#jobs', 1300)('#hiring', 986)) 
+B2: (('#melbourne', 1028)('#auspol', 356)('#incident', 314)('#victraffic', 239)('#firealarm', 237)) 
+C3: (('#melbourne', 614)('#incident', 317)('#victraffic', 297)('#firealarm', 232)('#structurefire', 219)) 
+B3: (('#incident', 222)('#melbourne', 213)('#structurefire', 177)('#nonstructurefire', 159)('#firealarm', 158)) 
+C4: (('#auspol', 281)('#incident', 195)('#structurefire', 179)('#savedallas', 177)('#victraffic', 144)) 
+B1: (('#melbourne', 226)('#structurefire', 134)('#vote5sos', 130)('#nonstructurefire', 128)('#incident', 111)) 
+D4: (('#nowplaying', 1730)('#karishmatannacraze', 83)('#victraffic', 79)('#structurefire', 70)('#noblepark', 69)) 
+D3: (('#melbourne', 99)('#beach', 67)('#incident', 67)('#victraffic', 63)('#structurefire', 62)) 
+C1: (('#jackfollowme', 148)('#incident', 112)('#jackdm', 111)('#structurefire', 98)('#camto4mill', 73)) 
+B4: (('#melbourne', 60)('#nonstructurefire', 55)('#structurefire', 49)('#incident', 49)('#fire', 31)) 
+A3: (('#raw', 40)('#structurefire', 38)('#nonstructurefire', 30)('#saveconstantine', 30)('#epping', 21)) 
+A2: (('#krazykristmas', 177)('#nonstructurefire', 72)('#structurefire', 70)('#rcl1milliongiveaway', 59)('#egsholidaygiveaway', 57)) 
+C5: (('#melbourne', 60)('#victraffic', 31)('#photo', 20)('#1000steps', 18)('#australia', 18)) 
+D5: (('#lost', 30)('#cat', 28)('#somebodytocon', 27)('#melbourne', 25)('#findjasper', 23)) 
+A1: (('#melbourne', 15)('#bbau', 15)('#tattoo', 14)('#worldjudo2014', 11)('#vobis', 11)) 
+A4: (('#auspol', 7)('#lnp', 6)('#qldvotes', 6)('#libspill', 5)('#vicfires', 3)) 
