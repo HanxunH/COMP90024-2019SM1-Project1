@@ -2,7 +2,7 @@
 # @Date:   2019-03-16T20:48:22+11:00
 # @Email:  hanxunh@student.unimelb.edu.au
 # @Last modified by:   hanxunhuang
-# @Last modified time: 2019-04-05T21:27:42+11:00
+# @Last modified time: 2019-04-05T22:37:30+11:00
 
 import argparse
 import logging
@@ -130,21 +130,10 @@ def main():
         final_result = [v for v in final_result.values()]
         final_result = sorted(final_result, key=lambda x: x.num_of_post, reverse=True)
 
-        # Print Resuts
-        print(('=' * 30) + ' Final Result ' + ('=' * 30))
-
         # Print total number of Twitter posts
         print(('=' * 30) + ' total number of Twitter posts' + ('=' * 30))
         for item in final_result:
-            print('%s: %d posts' % (item.id, item.num_of_post))
-
-        # Print top5 hashtags number of Twitter posts
-        print(('=' * 30) + ' Top 5 Hashtags' + ('=' * 30))
-        for item in final_result:
-            if len(item.top_5_string) > 0:
-                print('%s: (%s) ' % (item.id, item.top_5_string))
-            else:
-                print('%s: None ' % (item.id))
+            print('%s: %d posts - %s' % (item.id, item.num_of_post, item.top_5_string))
 
     return
 

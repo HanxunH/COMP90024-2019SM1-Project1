@@ -1,7 +1,7 @@
 # @Author: hanxunhuang
 # @Date:   2019-03-16T20:27:08+11:00
 # @Last modified by:   hanxunhuang
-# @Last modified time: 2019-04-05T21:28:36+11:00
+# @Last modified time: 2019-04-05T22:48:52+11:00
 import json
 import collections
 
@@ -27,8 +27,20 @@ class search_result:
         for item in self.hash_tags:
             self.cnt[item] = self.cnt[item] + 1
 
-        for item in self.cnt.most_common(5):
-            self.top_5_string = self.top_5_string + str(item)
+        top = 0
+        last = None
+        for item in self.cnt.most_common():
+            self.top_5_string = self.top_5_string + str(item) + ' '
+            _, count = item
+
+            if count != last:
+                top = top + 1
+                last = count
+            if top >= 5:
+                break
+
+        if self.top_5_string == '':
+            self.top_5_string = None
 
         return
 
