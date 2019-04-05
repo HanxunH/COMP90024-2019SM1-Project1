@@ -1,7 +1,7 @@
 # @Author: hanxunhuang
 # @Date:   2019-03-16T20:27:08+11:00
 # @Last modified by:   hanxunhuang
-# @Last modified time: 2019-04-04T01:07:57+11:00
+# @Last modified time: 2019-04-05T21:28:36+11:00
 import json
 import collections
 
@@ -127,24 +127,14 @@ class util:
         return grid_list
 
     def load_twitter_data(file_path='data/tinyTwitter.json'):
-        twitter_data_list = []
-        current_twitter_data_item = None
+        json_data_list = []
         with open(file_path) as f:
             for line in f:
                 if line.startswith('{"id'):
                     if line.endswith('},\n'):
-                        data = json.loads(line[0:len(line) - 2])
+                        data = json.loads(line[:-2])
                     else:
-                        data = json.loads(line[0:len(line) - 1])
-                    if current_twitter_data_item is not None:
-                        twitter_data_list.append(current_twitter_data_item)
-                    current_twitter_data_item = twitter_data()
-                    current_twitter_data_item.id = data['id']
-                    for hashtag in data['doc']['entities']['hashtags']:
-                        current_twitter_data_item.hashtags.append('#' + hashtag['text'].lower())
-                    if 'geo' in data['doc'] and data['doc']['geo'] is not None and 'coordinates' in data['doc']['geo']:
-                        current_twitter_data_item.coordinates = data['doc']['geo']['coordinates']
-            if current_twitter_data_item is not None:
-                twitter_data_list.append(current_twitter_data_item)
+                        data = json.loads(line[:-1])
+                    json_data_list.append(data)
 
-        return twitter_data_list
+        return json_data_list
