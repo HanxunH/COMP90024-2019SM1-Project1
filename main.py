@@ -2,13 +2,13 @@
 # @Date:   2019-03-16T20:48:22+11:00
 # @Email:  hanxunh@student.unimelb.edu.au
 # @Last modified by:   hanxunhuang
-# @Last modified time: 2019-04-05T22:37:30+11:00
+# @Last modified time: 2019-04-06T13:07:39+11:00
 
 import argparse
 import logging
 import datetime
 from mpi4py import MPI
-from util import util, search_result, twitter_data
+from util import util, search_result
 
 
 # Args Handling
@@ -31,37 +31,15 @@ def search(grid_data_list, twitter_data_list, logger):
         raise('Incosistent number of grids!')
 
     for data in twitter_data_list:
-        current_twitter_data_item = twitter_data()
-
-        if 'geo' in data['doc'] and data['doc']['geo'] is not None and 'coordinates' in data['doc']['geo']:
-            current_twitter_data_item.coordinates = data['doc']['geo']['coordinates']
-        elif 'coordinates' in data['doc'] and 'coordinates' in data['doc']['coordinates']:
-            current_twitter_data_item.coordinates = data['doc']['coordinates']['coordinates']
-        elif 'value' in data and 'geometry' in data['value'] and 'coordinates' in data['value']['geometry']:
-            current_twitter_data_item.coordinates = data['value']['geometry']['coordinates']
-        else:
-            continue
-
-        current_twitter_data_item.text = data['doc']['text'].lower()
-        tokens = current_twitter_data_item.text.split()
-        hash_tags_dict = set()
-        for item in tokens:
-            if item.startswith('#'):
-                hash_tags_dict.add(item)
-        current_twitter_data_item.hashtags = list(hash_tags_dict)
-
-        # for hashtag in data['doc']['entities']['hashtags']:
-        #     current_twitter_data_item.hashtags.append('#' + hashtag['text'].lower())
-
-        if current_twitter_data_item.coordinates is not None:
+        if data.coordinates is not None:
             for grid_data in grid_data_list:
-                if grid_data.check_if_coordinates_in_grid(current_twitter_data_item.coordinates):
+                if grid_data.check_if_coordinates_in_grid(data.coordinates):
                     # Make Sure The data is in the grid
                     logger.debug('Grid %s, Longtitude Range is [%f, %f], Latitude Range is [%f, %f]' % (grid_data.id, grid_data.min_longitude, grid_data.max_longitude, grid_data.min_latitude, grid_data.max_latitude))
-                    logger.debug(current_twitter_data_item.coordinates)
-                    logger.debug(current_twitter_data_item.user_location)
+                    logger.debug(data.coordinates)
+                    logger.debug(data.user_location)
                     rs_dict[grid_data.id].increment_num_of_post()
-                    rs_dict[grid_data.id].add_hash_tags(current_twitter_data_item.hashtags)
+                    rs_dict[grid_data.id].add_hash_tags(data.hashtags)
 
     return rs_dict
 

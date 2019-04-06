@@ -1,7 +1,7 @@
 # @Author: hanxunhuang
 # @Date:   2019-03-16T20:27:08+11:00
 # @Last modified by:   hanxunhuang
-# @Last modified time: 2019-04-05T22:48:52+11:00
+# @Last modified time: 2019-04-06T13:30:34+11:00
 import json
 import collections
 
@@ -139,7 +139,7 @@ class util:
         return grid_list
 
     def load_twitter_data(file_path='data/tinyTwitter.json'):
-        json_data_list = []
+        data_list = []
         with open(file_path) as f:
             for line in f:
                 if line.startswith('{"id'):
@@ -147,6 +147,25 @@ class util:
                         data = json.loads(line[:-2])
                     else:
                         data = json.loads(line[:-1])
-                    json_data_list.append(data)
+                    current_twitter_data_item = twitter_data()
+                    current_twitter_data_item.id = data['id']
+                    if 'geo' in data['doc'] and data['doc']['geo'] is not None and 'coordinates' in data['doc']['geo']:
+                        current_twitter_data_item.coordinates = data['doc']['geo']['coordinates']
+                    elif 'coordinates' in data['doc'] and data['doc']['coordinates'] is not None and 'coordinates' in data['doc']['coordinates']:
+                        current_twitter_data_item.coordinates = data['doc']['coordinates']['coordinates']
+                    # elif 'value' in data and data['value'] is not None and 'geometry' in data['value'] and data['value']['geometry'] is not None and 'coordinates' in data['value']['geometry']:
+                    #     current_twitter_data_item.coordinates = data['value']['geometry']['coordinates']
+                    else:
+                        continue
 
-        return json_data_list
+                    current_twitter_data_item.text = data['doc']['text'].lower()
+                    tokens = current_twitter_data_item.text.split()
+                    hash_tags_dict = set()
+                    for item in tokens:
+                        if item.startswith('#'):
+                            hash_tags_dict.add(item)
+                    current_twitter_data_item.hashtags = list(hash_tags_dict)
+
+                    data_list.append(current_twitter_data_item)
+
+        return data_list
