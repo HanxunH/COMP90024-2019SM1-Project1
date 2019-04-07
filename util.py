@@ -1,7 +1,13 @@
 # @Author: hanxunhuang
 # @Date:   2019-03-16T20:27:08+11:00
 # @Last modified by:   hanxunhuang
-# @Last modified time: 2019-04-06T13:30:34+11:00
+# @Last modified time: 2019-04-07T21:41:58+10:00
+
+# class search_result:   stores the search result
+# class grid_data:       parse and stores the grid json data
+# class twitter_data:    parse and stores the twitter json data
+# class util:            handle the load data and search helper function
+
 import json
 import collections
 
@@ -124,6 +130,29 @@ class twitter_data:
 
 
 class util:
+    def search(grid_data_list, twitter_data_list, logger, rs_dict, process_data=False):
+        # Double Check the grid ID matches!
+        if len(rs_dict) != len(grid_data_list):
+            raise('Incosistent number of grids!')
+
+        for data in twitter_data_list:
+            if process_data:
+                data = util.process_twitter_json(data)
+                if data is None:
+                    continue
+
+            if data.coordinates is not None:
+                for grid_data in grid_data_list:
+                    if grid_data.check_if_coordinates_in_grid(data.coordinates):
+                        # Make Sure The data is in the grid
+                        logger.debug('Grid %s, Longtitude Range is [%f, %f], Latitude Range is [%f, %f]' % (grid_data.id, grid_data.min_longitude, grid_data.max_longitude, grid_data.min_latitude, grid_data.max_latitude))
+                        logger.debug(data.coordinates)
+                        logger.debug(data.user_location)
+                        rs_dict[grid_data.id].increment_num_of_post()
+                        rs_dict[grid_data.id].add_hash_tags(data.hashtags)
+
+        return rs_dict
+
     def load_grid(file_path='data/melbGrid.json'):
         with open(file_path, 'r') as f:
             data = json.load(f)
@@ -138,34 +167,38 @@ class util:
 
         return grid_list
 
+    def process_twitter_json(line):
+        current_twitter_data_item = None
+        if line.startswith('{"id'):
+            if line.endswith('},\n'):
+                data = json.loads(line[:-2])
+            else:
+                data = json.loads(line[:-1])
+            current_twitter_data_item = twitter_data()
+            current_twitter_data_item.id = data['id']
+            if 'geo' in data['doc'] and data['doc']['geo'] is not None and 'coordinates' in data['doc']['geo']:
+                current_twitter_data_item.coordinates = data['doc']['geo']['coordinates']
+            elif 'coordinates' in data['doc'] and data['doc']['coordinates'] is not None and 'coordinates' in data['doc']['coordinates']:
+                current_twitter_data_item.coordinates = data['doc']['coordinates']['coordinates']
+            # elif 'value' in data and data['value'] is not None and 'geometry' in data['value'] and data['value']['geometry'] is not None and 'coordinates' in data['value']['geometry']:
+            #     current_twitter_data_item.coordinates = data['value']['geometry']['coordinates']
+
+            current_twitter_data_item.text = data['doc']['text'].lower()
+            tokens = current_twitter_data_item.text.split()
+            hash_tags_dict = set()
+            for item in tokens:
+                if item.startswith('#'):
+                    hash_tags_dict.add(item)
+            current_twitter_data_item.hashtags = list(hash_tags_dict)
+
+        return current_twitter_data_item
+
     def load_twitter_data(file_path='data/tinyTwitter.json'):
         data_list = []
         with open(file_path) as f:
             for line in f:
-                if line.startswith('{"id'):
-                    if line.endswith('},\n'):
-                        data = json.loads(line[:-2])
-                    else:
-                        data = json.loads(line[:-1])
-                    current_twitter_data_item = twitter_data()
-                    current_twitter_data_item.id = data['id']
-                    if 'geo' in data['doc'] and data['doc']['geo'] is not None and 'coordinates' in data['doc']['geo']:
-                        current_twitter_data_item.coordinates = data['doc']['geo']['coordinates']
-                    elif 'coordinates' in data['doc'] and data['doc']['coordinates'] is not None and 'coordinates' in data['doc']['coordinates']:
-                        current_twitter_data_item.coordinates = data['doc']['coordinates']['coordinates']
-                    # elif 'value' in data and data['value'] is not None and 'geometry' in data['value'] and data['value']['geometry'] is not None and 'coordinates' in data['value']['geometry']:
-                    #     current_twitter_data_item.coordinates = data['value']['geometry']['coordinates']
-                    else:
-                        continue
-
-                    current_twitter_data_item.text = data['doc']['text'].lower()
-                    tokens = current_twitter_data_item.text.split()
-                    hash_tags_dict = set()
-                    for item in tokens:
-                        if item.startswith('#'):
-                            hash_tags_dict.add(item)
-                    current_twitter_data_item.hashtags = list(hash_tags_dict)
-
-                    data_list.append(current_twitter_data_item)
+                object = util.process_twitter_json(line)
+                if object is not None:
+                    data_list.append(object)
 
         return data_list
