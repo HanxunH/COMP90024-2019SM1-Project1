@@ -1,0 +1,37 @@
+2019-04-06 19:37:26,203-Process-0-INFO-Total Number of Cores: 8
+2019-04-06 19:37:26,203-Process-0-INFO-Total of 434847 Twitter Data entries before scattering
+2019-04-06 19:37:26,203-Process-0-INFO-IO takes: 0:03:38.502209 
+2019-04-06 19:37:28,632-Process-1-INFO-Handling 54356 Twitter Data entries, 16 grids
+2019-04-06 19:37:28,638-Process-7-INFO-Handling 54355 Twitter Data entries, 16 grids
+2019-04-06 19:37:28,642-Process-5-INFO-Handling 54356 Twitter Data entries, 16 grids
+2019-04-06 19:37:28,653-Process-3-INFO-Handling 54356 Twitter Data entries, 16 grids
+2019-04-06 19:37:28,655-Process-6-INFO-Handling 54356 Twitter Data entries, 16 grids
+2019-04-06 19:37:28,658-Process-2-INFO-Handling 54356 Twitter Data entries, 16 grids
+2019-04-06 19:37:28,662-Process-4-INFO-Handling 54356 Twitter Data entries, 16 grids
+2019-04-06 19:37:29,120-Process-0-INFO-Handling 54356 Twitter Data entries, 16 grids
+2019-04-06 19:37:30,669-Process-6-INFO-Search takes: 0:00:02.013220 
+2019-04-06 19:37:30,685-Process-1-INFO-Search takes: 0:00:02.051358 
+2019-04-06 19:37:30,687-Process-7-INFO-Search takes: 0:00:02.048005 
+2019-04-06 19:37:30,698-Process-2-INFO-Search takes: 0:00:02.039725 
+2019-04-06 19:37:30,707-Process-4-INFO-Search takes: 0:00:02.043834 
+2019-04-06 19:37:30,711-Process-3-INFO-Search takes: 0:00:02.057563 
+2019-04-06 19:37:30,740-Process-5-INFO-Search takes: 0:00:02.097174 
+2019-04-06 19:37:31,335-Process-0-INFO-Search takes: 0:00:02.212683 
+2019-04-06 19:37:38,275-Process-0-INFO-Total of 434847 Twitter Data entries after gathering
+============================== total number of Twitter posts==============================
+C2: 145096 posts - ('#melbourne', 11193) ('#australia', 1601) ('#job', 1493) ('#jobs', 1300) ('#hiring', 845) 
+B2: 79633 posts - ('#melbourne', 906) ('#auspol', 341) ('#incident:', 283) ('#victraffic', 239) ('#firealarm:', 237) 
+C3: 53299 posts - ('#melbourne', 532) ('#victraffic', 297) ('#incident:', 293) ('#firealarm:', 232) ('#structurefire:', 219) 
+B3: 26550 posts - ('#incident:', 205) ('#melbourne', 196) ('#structurefire:', 177) ('#nonstructurefire:', 159) ('#firealarm:', 158) 
+C4: 19699 posts - ('#auspol', 263) ('#structurefire:', 179) ('#incident:', 156) ('#savedallas', 153) ('#victraffic', 144) 
+B1: 16507 posts - ('#melbourne', 186) ('#structurefire:', 134) ('#nonstructurefire:', 128) ('#vote5sos', 106) ('#incident:', 99) 
+D4: 14497 posts - ('#nowplaying', 1730) ('#karishmatannacraze', 83) ('#victraffic', 79) ('#structurefire:', 70) ('#assistotheragency:', 49) 
+D3: 13388 posts - ('#melbourne', 88) ('#victraffic', 63) ('#structurefire:', 62) ('#beach', 61) ('#incident:', 58) 
+C1: 8415 posts - ('#incident:', 99) ('#structurefire:', 98) ('#camto4mill', 73) ('#christmasfollowparty', 62) ('#firealarm:', 60) 
+B4: 5450 posts - ('#nonstructurefire:', 55) ('#structurefire:', 49) ('#incident:', 42) ('#melbourne', 38) ('#hazmat:', 27) 
+A3: 5036 posts - ('#raw', 38) ('#structurefire:', 38) ('#nonstructurefire:', 30) ('#saveconstantine', 26) ('#vicfires', 19) ('#epping.', 18) 
+A2: 4165 posts - ('#krazykristmas', 167) ('#nonstructurefire:', 72) ('#structurefire:', 70) ('#rcl1milliongiveaway', 59) ('#egsholidaygiveaway', 57) 
+C5: 4105 posts - ('#melbourne', 53) ('#victraffic', 31) ('#photo', 20) ('#australia', 17) ('#1000steps', 16) 
+D5: 3248 posts - ('#lost', 29) ('#somebodytocon', 27) ('#cat,', 25) ('#melbourne', 22) ('#findjasper', 21) 
+A1: 2533 posts - ('#melbourne', 15) ('#bbau', 14) ('#worldjudo2014', 11) ('#vobis', 11) ('#tattoo', 11) ('#judo', 10) ('#my', 9) 
+A4: 310 posts - ('#auspol', 7) ('#libspill', 5) ('#lnp', 5) ('#qldvotes', 4) ('#vicfires', 3) ('#grassfire:', 3) ('#photo', 3) ('#cycling', 2) 

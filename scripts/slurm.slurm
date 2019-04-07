@@ -1,9 +1,9 @@
 #!/bin/bash
 
 #SBATCH --account=COMP90024
-#SBATCH --nodes=1
-#SBATCH --ntasks-per-node=1
-#SBATCH --cpus-per-task=8
+#SBATCH --nodes=2
+#SBATCH --ntasks-per-node=4
+#SBATCH --cpus-per-task=1
 #SBATCH --time=1-0:0:00
 
 # check that the script is launched with sbatch
