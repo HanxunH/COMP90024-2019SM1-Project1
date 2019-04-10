@@ -2,7 +2,7 @@
 # @Date:   2019-03-16T20:48:22+11:00
 # @Email:  hanxunh@student.unimelb.edu.au
 # @Last modified by:   hanxunhuang
-# @Last modified time: 2019-04-07T21:46:40+10:00
+# @Last modified time: 2019-04-10T22:04:18+10:00
 
 # ArgumentParser: Check help argument for the specifications
 #
@@ -29,9 +29,7 @@ parser.add_argument('--grid_file_path', type=str, default='data/melbGrid.json', 
 parser.add_argument('--twitter_data_file_path', type=str, default='data/tinyTwitter.json', help='Path to the twitter data json File')
 parser.add_argument('--batch_size', type=int, default=10, help='Number of data in batch for subprocesses to handle')
 parser.add_argument('--debug', default=False, help='Set to True if running in Debug Mode')
-
 args = parser.parse_args()
-
 start = None
 end = None
 logger = None

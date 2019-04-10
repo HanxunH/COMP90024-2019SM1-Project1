@@ -1,7 +1,7 @@
 # @Author: hanxunhuang
 # @Date:   2019-03-16T20:27:08+11:00
 # @Last modified by:   hanxunhuang
-# @Last modified time: 2019-04-07T21:41:58+10:00
+# @Last modified time: 2019-04-10T23:14:32+10:00
 
 # class search_result:   stores the search result
 # class grid_data:       parse and stores the grid json data
@@ -95,7 +95,7 @@ class grid_data:
 
         latitude = coordinates[0]
         longitude = coordinates[1]
-        if (latitude >= self.min_latitude and latitude < self.max_latitude) and (longitude > self.min_longitude and longitude <= self.max_longitude):
+        if (latitude >= self.min_latitude and latitude <= self.max_latitude) and (longitude >= self.min_longitude and longitude <= self.max_longitude):
             return True
         return False
 
@@ -150,6 +150,7 @@ class util:
                         logger.debug(data.user_location)
                         rs_dict[grid_data.id].increment_num_of_post()
                         rs_dict[grid_data.id].add_hash_tags(data.hashtags)
+                        break
 
         return rs_dict
 
@@ -179,10 +180,10 @@ class util:
             if 'geo' in data['doc'] and data['doc']['geo'] is not None and 'coordinates' in data['doc']['geo']:
                 current_twitter_data_item.coordinates = data['doc']['geo']['coordinates']
             elif 'coordinates' in data['doc'] and data['doc']['coordinates'] is not None and 'coordinates' in data['doc']['coordinates']:
-                current_twitter_data_item.coordinates = data['doc']['coordinates']['coordinates']
-            # elif 'value' in data and data['value'] is not None and 'geometry' in data['value'] and data['value']['geometry'] is not None and 'coordinates' in data['value']['geometry']:
-            #     current_twitter_data_item.coordinates = data['value']['geometry']['coordinates']
-
+                current_twitter_data_item.coordinates[0] = data['doc']['coordinates']['coordinates'][1]
+                current_twitter_data_item.coordinates[1] = data['doc']['coordinates']['coordinates'][0]
+            elif 'value' in data and data['value'] is not None and type(data['value']) == type({}):
+                print(data['value'])
             current_twitter_data_item.text = data['doc']['text'].lower()
             tokens = current_twitter_data_item.text.split()
             hash_tags_dict = set()
