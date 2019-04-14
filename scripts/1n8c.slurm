@@ -1,9 +1,9 @@
 #!/bin/bash
 
 #SBATCH --account=COMP90024
-#SBATCH --nodes=2
-#SBATCH --ntasks-per-node=4
-#SBATCH --cpus-per-task=1
+#SBATCH --nodes=1
+#SBATCH --ntasks-per-node=1
+#SBATCH --cpus-per-task=8
 #SBATCH --time=1-0:0:00
 
 # check that the script is launched with sbatch
@@ -19,5 +19,5 @@ module load MPICH/3.2.1-GCC-6.2.0
 module load Python/3.5.2-GCC-6.2.0
 
 # The job command(s):
-time mpirun -np 8 python3 main.py --grid_file_path "../data/melbGrid.json" --twitter_data_file_path="../data/bigTwitter.json"  --batch_size=15
+time mpirun python3 main.py --grid_file_path "../data/melbGrid.json" --twitter_data_file_path="../data/bigTwitter.json"  --batch_size=15
 
