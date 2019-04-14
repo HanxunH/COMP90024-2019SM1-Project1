@@ -1,0 +1,28 @@
+2019-04-14 17:48:56,492-Process-4-INFO-Program Starts at: 2019-04-14 17:48:56.492279
+2019-04-14 17:48:56,492-Process-6-INFO-Program Starts at: 2019-04-14 17:48:56.492278
+2019-04-14 17:48:56,492-Process-5-INFO-Program Starts at: 2019-04-14 17:48:56.492397
+2019-04-14 17:48:56,492-Process-7-INFO-Program Starts at: 2019-04-14 17:48:56.492402
+2019-04-14 17:48:56,482-Process-2-INFO-Program Starts at: 2019-04-14 17:48:56.482503
+2019-04-14 17:48:56,482-Process-0-INFO-Program Starts at: 2019-04-14 17:48:56.482555
+2019-04-14 17:48:56,482-Process-3-INFO-Program Starts at: 2019-04-14 17:48:56.482573
+2019-04-14 17:48:56,483-Process-1-INFO-Program Starts at: 2019-04-14 17:48:56.483504
+2019-04-14 17:49:46,276-Process-0-INFO-Processed 2500002 lines of Data entries
+2019-04-14 17:49:46,276-Process-1-INFO-Processed 2500002 lines of Data entries
+2019-04-14 17:49:46,276-Process-2-INFO-Processed 2500002 lines of Data entries
+2019-04-14 17:49:46,276-Process-3-INFO-Processed 2500002 lines of Data entries
+2019-04-14 17:49:46,276-Process-1-INFO-IO takes: 0:00:49.793354 
+2019-04-14 17:49:46,276-Process-2-INFO-IO takes: 0:00:49.794410 
+2019-04-14 17:49:46,276-Process-0-INFO-IO takes: 0:00:49.794316 
+2019-04-14 17:49:46,280-Process-3-INFO-IO takes: 0:00:49.798307 
+2019-04-14 17:49:46,909-Process-4-INFO-Processed 2500002 lines of Data entries
+2019-04-14 17:49:46,909-Process-5-INFO-Processed 2500002 lines of Data entries
+2019-04-14 17:49:46,909-Process-6-INFO-Processed 2500002 lines of Data entries
+2019-04-14 17:49:46,909-Process-5-INFO-IO takes: 0:00:50.417525 
+2019-04-14 17:49:46,909-Process-7-INFO-Processed 2500002 lines of Data entries
+2019-04-14 17:49:46,910-Process-4-INFO-IO takes: 0:00:50.417709 
+2019-04-14 17:49:46,910-Process-6-INFO-IO takes: 0:00:50.417750 
+2019-04-14 17:49:46,910-Process-7-INFO-IO takes: 0:00:50.417761 
+
+real	0m51.041s
+user	0m0.019s
+sys	0m0.018s

@@ -1,0 +1,7 @@
+2019-04-14 17:47:41,251-Process-0-INFO-Program Starts at: 2019-04-14 17:47:41.251655
+2019-04-14 17:48:48,561-Process-0-INFO-Processed 2500002 lines of Data entries
+2019-04-14 17:48:48,561-Process-0-INFO-IO takes: 0:01:07.310267 
+
+real	1m7.938s
+user	0m0.014s
+sys	0m0.013s
