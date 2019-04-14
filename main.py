@@ -2,7 +2,7 @@
 # @Date:   2019-03-16T20:48:22+11:00
 # @Email:  hanxunh@student.unimelb.edu.au
 # @Last modified by:   hanxunhuang
-# @Last modified time: 2019-04-10T22:04:18+10:00
+# @Last modified time: 2019-04-14T15:06:04+10:00
 
 # ArgumentParser: Check help argument for the specifications
 #
@@ -77,9 +77,10 @@ def main():
 
     if size == 1:
         program_timmer_start()
-        twitter_data_list = util.load_twitter_data(args.twitter_data_file_path)
-        logger.info('Processed %d lines of Data entries' % (len(twitter_data_list)))
-        rs_dict = util.search(grid_data_list=grid_data_list, twitter_data_list=twitter_data_list, logger=logger, rs_dict=rs_dict)
+        rs_dict = util.load_twitter_data_and_search(file_path=args.twitter_data_file_path, grid_data_list=grid_data_list, logger=logger, rs_dict=rs_dict)
+        logger.info('Total Number of Cores: %d' % (size))
+        search_end = datetime.datetime.now()
+        logger.info('Search takes: %s ' % (str((search_end-start))))
         print_final_result(rs_dict)
         program_timmer_end()
     else:
@@ -115,7 +116,7 @@ def main():
             while True:
                 data = comm.recv(source=0, tag=11)
                 logger.debug('Processing of %d lines of data' % (len(data)))
-                rs_dict = util.search(grid_data_list=grid_data_list, twitter_data_list=data, logger=logger, rs_dict=rs_dict, process_data=True)
+                rs_dict = util.search(grid_data_list=grid_data_list, twitter_data_list=data, logger=logger, rs_dict=rs_dict)
                 if len(data) == 0:
                     break
                 total_count = total_count + len(data)

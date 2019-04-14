@@ -1,7 +1,7 @@
 # @Author: hanxunhuang
 # @Date:   2019-03-16T20:27:08+11:00
 # @Last modified by:   hanxunhuang
-# @Last modified time: 2019-04-10T23:14:32+10:00
+# @Last modified time: 2019-04-14T15:06:36+10:00
 
 # class search_result:   stores the search result
 # class grid_data:       parse and stores the grid json data
@@ -130,16 +130,15 @@ class twitter_data:
 
 
 class util:
-    def search(grid_data_list, twitter_data_list, logger, rs_dict, process_data=False):
+    def search(grid_data_list, twitter_data_list, logger, rs_dict):
         # Double Check the grid ID matches!
         if len(rs_dict) != len(grid_data_list):
             raise('Incosistent number of grids!')
 
         for data in twitter_data_list:
-            if process_data:
-                data = util.process_twitter_json(data)
-                if data is None:
-                    continue
+            data = util.process_twitter_json(data)
+            if data is None:
+                continue
 
             if data.coordinates is not None:
                 for grid_data in grid_data_list:
@@ -203,3 +202,22 @@ class util:
                     data_list.append(object)
 
         return data_list
+
+    def load_twitter_data_and_search(file_path, grid_data_list, logger, rs_dict):
+        with open(file_path) as f:
+            count = 0
+            for line in f:
+                data = util.process_twitter_json(line)
+                count = count + 1
+                if data is not None and data.coordinates is not None:
+                    for grid_data in grid_data_list:
+                        if grid_data.check_if_coordinates_in_grid(data.coordinates):
+                            # Make Sure The data is in the grid
+                            logger.debug('Grid %s, Longtitude Range is [%f, %f], Latitude Range is [%f, %f]' % (grid_data.id, grid_data.min_longitude, grid_data.max_longitude, grid_data.min_latitude, grid_data.max_latitude))
+                            logger.debug(data.coordinates)
+                            logger.debug(data.user_location)
+                            rs_dict[grid_data.id].increment_num_of_post()
+                            rs_dict[grid_data.id].add_hash_tags(data.hashtags)
+                            break
+            logger.info('Processed %d lines of Data entries' % (count))
+        return rs_dict
