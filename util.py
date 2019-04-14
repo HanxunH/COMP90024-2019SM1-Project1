@@ -1,7 +1,7 @@
 # @Author: hanxunhuang
 # @Date:   2019-03-16T20:27:08+11:00
 # @Last modified by:   hanxunhuang
-# @Last modified time: 2019-04-14T15:06:36+10:00
+# @Last modified time: 2019-04-14T15:58:39+10:00
 
 # class search_result:   stores the search result
 # class grid_data:       parse and stores the grid json data
@@ -221,3 +221,11 @@ class util:
                             break
             logger.info('Processed %d lines of Data entries' % (count))
         return rs_dict
+
+    def test_io(file_path, logger):
+        with open(file_path) as f:
+            count = 0
+            for line in f:
+                count = count + 1
+            logger.info('Processed %d lines of Data entries' % (count))
+        return 
