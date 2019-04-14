@@ -1,0 +1,25 @@
+2019-04-09 17:19:14,546-Process-0-INFO-Program Starts at: 2019-04-09 17:19:14.545965
+2019-04-09 17:23:23,544-Process-0-INFO-Processed 2500000 lines of Data entries
+2019-04-09 17:26:21,330-Process-0-INFO-Program Ends at: 2019-04-09 17:26:21.330558
+2019-04-09 17:26:21,330-Process-0-INFO-Program Total execution time: 0:07:06.784593 
+============================== total number of Twitter posts==============================
+C2: 145096 posts - ('#melbourne', 11193) ('#australia', 1601) ('#job', 1493) ('#jobs', 1300) ('#hiring', 845) 
+B2:  79633 posts - ('#melbourne', 906) ('#auspol', 341) ('#incident:', 283) ('#victraffic', 239) ('#firealarm:', 237) 
+C3:  53299 posts - ('#melbourne', 532) ('#victraffic', 297) ('#incident:', 293) ('#firealarm:', 232) ('#structurefire:', 219) 
+B3:  26550 posts - ('#incident:', 205) ('#melbourne', 196) ('#structurefire:', 177) ('#nonstructurefire:', 159) ('#firealarm:', 158) 
+C4:  19699 posts - ('#auspol', 263) ('#structurefire:', 179) ('#incident:', 156) ('#savedallas', 153) ('#victraffic', 144) 
+B1:  16507 posts - ('#melbourne', 186) ('#structurefire:', 134) ('#nonstructurefire:', 128) ('#vote5sos', 106) ('#incident:', 99) 
+D4:  14497 posts - ('#nowplaying', 1730) ('#karishmatannacraze', 83) ('#victraffic', 79) ('#structurefire:', 70) ('#assistotheragency:', 49) 
+D3:  13388 posts - ('#melbourne', 88) ('#victraffic', 63) ('#structurefire:', 62) ('#beach', 61) ('#incident:', 58) 
+C1:   8415 posts - ('#incident:', 99) ('#structurefire:', 98) ('#camto4mill', 73) ('#christmasfollowparty', 62) ('#firealarm:', 60) 
+B4:   5450 posts - ('#nonstructurefire:', 55) ('#structurefire:', 49) ('#incident:', 42) ('#melbourne', 38) ('#hazmat:', 27) 
+A3:   5036 posts - ('#raw', 38) ('#structurefire:', 38) ('#nonstructurefire:', 30) ('#saveconstantine', 26) ('#vicfires', 19) ('#epping.', 18) 
+A2:   4165 posts - ('#krazykristmas', 167) ('#nonstructurefire:', 72) ('#structurefire:', 70) ('#rcl1milliongiveaway', 59) ('#egsholidaygiveaway', 57) 
+C5:   4105 posts - ('#melbourne', 53) ('#victraffic', 31) ('#photo', 20) ('#australia', 17) ('#1000steps', 16) 
+D5:   3248 posts - ('#lost', 29) ('#somebodytocon', 27) ('#cat,', 25) ('#melbourne', 22) ('#findjasper', 21) 
+A1:   2533 posts - ('#melbourne', 15) ('#bbau', 14) ('#tattoo', 11) ('#worldjudo2014', 11) ('#vobis', 11) ('#judo', 10) ('#my', 9) 
+A4:    310 posts - ('#auspol', 7) ('#libspill', 5) ('#lnp', 5) ('#qldvotes', 4) ('#vicfires', 3) ('#grassfire:', 3) ('#photo', 3) ('#celebmerv', 2) 
+
+real	7m11.174s
+user	0m0.012s
+sys	0m0.022s
