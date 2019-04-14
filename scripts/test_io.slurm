@@ -2,7 +2,7 @@
 
 #SBATCH --account=COMP90024
 #SBATCH --nodes=1
-#SBATCH --ntasks-per-node=4
+#SBATCH --ntasks-per-node=1
 #SBATCH --cpus-per-task=1
 #SBATCH --time=1-0:0:00
 
@@ -19,4 +19,4 @@ module load MPICH/3.2.1-GCC-6.2.0
 module load Python/3.5.2-GCC-6.2.0
 
 # The job command(s):
-timp mpirun -np 1 python3 test_io.py --twitter_data_file_path data/bigTwitter.json
+time mpirun -np 1 python3 test_io.py --twitter_data_file_path data/bigTwitter.json
